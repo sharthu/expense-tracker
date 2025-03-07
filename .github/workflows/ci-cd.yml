@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build and Deploy
+        working-directory: ./expense_tracker  # Adjust if folder name differs
         run: |
           sleep 5
           docker-compose up -d --build || echo "Deploy failed"
