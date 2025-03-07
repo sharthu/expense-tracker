@@ -15,6 +15,3 @@ jobs:
         run: |
           sleep 10
           docker ps -a
-      - name: Check Logs
-        run: |
-          docker-compose logs frontend
