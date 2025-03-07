@@ -1,0 +1,23 @@
+body {
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.list-group-item {
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
