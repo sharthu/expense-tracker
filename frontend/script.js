@@ -48,6 +48,33 @@ document.getElementById('expenseForm').addEventListener('submit', async (e) => {
         console.error('Error adding expense:', error);
         alert('Failed to add expense: ' + error.message);
     }
+}
+
+function toggleNightMode() {
+    const body = document.body;
+    const button = document.querySelector('.toggle-btn');
+
+    // Toggle dark-mode class
+    body.classList.toggle('dark-mode');
+
+    // Change icon based on mode
+    if (body.classList.contains('dark-mode')) {
+        button.textContent = '🌙'; // Moon icon for dark mode
+    } else {
+        button.textContent = '☀️'; // Sun icon for light mode
+    }
+
+    // Optional: Save preference to localStorage
+    localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+}
+
+// Check if dark mode was previously enabled
+window.onload = function() {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.toggle-btn').textContent = '🌙';
+    }
 });
 
 loadExpenses();
+
