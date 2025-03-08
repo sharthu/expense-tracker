@@ -1,17 +1,54 @@
 name: Deploy
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
-      - name: Build and Deploy
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Stop existing containers
+      - name: Stop Containers
         run: |
-          docker-compose down
+          docker-compose down || true
+
+      # Build and start containers with timeout
+      - name: Build and Deploy
+        timeout-minutes: 5  # Fail if takes longer than 5 minutes
+        run: |
           docker-compose up -d --build
-      - name: Verify Containers
+
+      # Verify containers and test
+      - name: Verify and Test
         run: |
           sleep 10
           docker ps -a
+          # Check if containers are running
+          if [ $(docker ps -q -f status=running | wc -l) -ne 2 ]; then
+            echo "Error: Not all containers are running!"
+            docker-compose logs
+            exit 1
+          fi
+          # Test Backend
+          curl --retry 5 --retry-delay 2 -f http://localhost:8000/ || {
+            echo "Backend test failed!"
+            docker-compose logs backend
+            exit 1
+          }
+          # Test Frontend
+          curl --retry 5 --retry-delay 2 -f http://localhost/ || {
+            echo "Frontend test failed!"
+            docker-compose logs frontend
+            exit 1
+          }
+
+      # Clean up unused images
+      - name: Clean Up
+        if: always()  # Run even if previous steps fail
+        run: |
+          docker image prune -f
