@@ -21,3 +21,21 @@ body {
     border-radius: 5px;
     margin-bottom: 5px;
 }
+
+/* Dark Mode Style */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+/* Toggle Button Style */
+.toggle-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 24px;
+}
